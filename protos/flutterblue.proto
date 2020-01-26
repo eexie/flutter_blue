@@ -43,7 +43,6 @@ class BluetoothDevice {
 
     return;
   }
-
   /// Cancels connection to the Bluetooth Device
   Future disconnect() =>
       FlutterBlue.instance._channel.invokeMethod('disconnect', id.toString());
@@ -145,3 +144,33 @@ class BluetoothDevice {
 enum BluetoothDeviceType { unknown, classic, le, dual }
 
 enum BluetoothDeviceState { disconnected, connecting, connected, disconnecting }
+
+message OnCharacteristicChanged {
+  string remote_id = 1;
+  BluetoothCharacteristic characteristic = 2;
+}
+
+message DeviceStateResponse {
+  enum BluetoothDeviceState {
+    DISCONNECTED = 0;
+    CONNECTING = 1;
+    CONNECTED = 2;
+    DISCONNECTING = 3;
+  }
+  string remote_id = 1;
+  BluetoothDeviceState state = 2;
+}
+
+message ConnectedDevicesResponse {
+  repeated BluetoothDevice devices = 1;
+}
+
+message MtuSizeRequest {
+  string remote_id = 1;
+  uint32 mtu = 2;
+}
+
+message MtuSizeResponse {
+  string remote_id = 1;
+  uint32 mtu = 2;
+}
